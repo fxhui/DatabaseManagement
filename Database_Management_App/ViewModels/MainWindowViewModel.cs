@@ -150,6 +150,46 @@ namespace Database_Management_App.ViewModels
             }
         }
 
+        public ICommand AllSelectCommand
+        {
+            get
+            {
+                return new CommandBase((param) =>
+                {
+                    var list = TenantItems.AsEnumerable();
+                    if (!string.IsNullOrWhiteSpace(_searchKeyword))
+                    {
+                        list = TenantItems.Where(d => d.Name.ToLower().Contains(_searchKeyword.ToLower()));
+                    }
+
+                    UpdateTenantList(TenantItems.Except(list), false);
+
+                    if (list.Any(d => d.IsChecked == false))
+                    {
+                        UpdateTenantList(list, true);
+                    }
+                    else
+                    {
+                        UpdateTenantList(list, false);
+                    }
+                    _tenantItemsView.Refresh();
+
+
+                    void UpdateTenantList(IEnumerable<TenantViewModel> list, bool flag)
+                    {
+                        if (list == null || list.Count() == 0)
+                        {
+                            return;
+                        }
+                        foreach (var item in list)
+                        {
+                            item.IsChecked = flag;
+                        }
+                    }
+                });
+            }
+        }
+
         public void Run()
         {
             if (string.IsNullOrWhiteSpace(_inputString))

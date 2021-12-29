@@ -42,6 +42,7 @@
                         materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
                         materialDesign:TextFieldAssist.TextFieldCornerRadius="4"/>
             <ListBox 
+                        DockPanel.Dock="Top"
                         x:Name="TenantItemsListBox" 
                         Margin="0 10"
                         ItemsSource="{Binding TenantItems}"
@@ -57,6 +58,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <Button  DockPanel.Dock="Bottom" Style="{StaticResource MaterialDesignFlatMidBgButton}" Content="全选/取消" 
+                     Command="{Binding AllSelectCommand}"></Button>
 
         </DockPanel>
         <Border Grid.Column="1" Grid.RowSpan="2"  BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1"></Border>
