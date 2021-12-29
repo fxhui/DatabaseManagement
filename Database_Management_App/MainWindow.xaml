@@ -139,8 +139,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <control:DataGridControl  
-                                ColumnItems="{Binding ColumnItems}"  DataContext="{Binding .}" 
+                            <control:DataGridControl DataContext="{Binding .}" 
                                 SelectedIndex="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window},Path=DataContext.SelectedTabIndex}" 
                                 />
                         </DataTemplate>
@@ -148,6 +147,7 @@
                 </ItemsControl>
                 <Grid Grid.Row="2" Visibility="{Binding SelectedTabIndex, Converter={StaticResource tabVisibleConverter}, ConverterParameter='-1'}">
                     <TextBox 
+                            IsReadOnly="True"
                             FontSize="16"
                             Text="{Binding OutputString}"
                             TextWrapping="Wrap"

@@ -28,38 +28,6 @@ namespace Database_Management_App.UserControls
             dataGrid.ColumnWidth = DataGridLength.Auto;
         }
 
-        public List<string> ColumnItems
-        {
-            get { return (List<string>)GetValue(ColumnItemsProperty); }
-            set { SetValue(ColumnItemsProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ColumnItems.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ColumnItemsProperty =
-            DependencyProperty.Register("ColumnItems", typeof(List<string>), typeof(DataGridControl), new PropertyMetadata(new List<string>(), PropertyChangedCallback));
-
-        private static void PropertyChangedCallback(
-            DependencyObject dependencyObject,
-            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            var control = dependencyObject as DataGridControl;
-            var items = dependencyPropertyChangedEventArgs.NewValue as List<string>;
-            if (control.dataGrid != null)
-            {
-                control.dataGrid.Columns.Clear();
-                items.ForEach(d =>
-                {
-                    control.dataGrid.Columns.Add(new DataGridTextColumn()
-                    {
-                        CanUserResize = true,
-                        Header = d,
-                        Binding = new Binding(d),
-                    });
-                });
-            }
-        }
-
-
 
         public int SelectedIndex
         {
