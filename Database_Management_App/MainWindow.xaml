@@ -17,53 +17,59 @@
             <Setter Property="Control.BorderBrush" Value="{DynamicResource PrimaryHueMidBrush}"/>
             <Setter Property="Margin" Value="0 0 5 0"></Setter>
         </Style>
+        <Style x:Key="SearchBox" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="Background" Value="#fff"></Setter>
+            <Setter Property="Foreground" Value="#333"></Setter>
+            <Setter Property="materialDesign:HintAssist.Hint" Value="Search"></Setter>
+            <Setter Property="materialDesign:HintAssist.Foreground" Value="#999"></Setter>
+            <Setter Property="materialDesign:HintAssist.IsFloating" Value="True"></Setter>
+            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True"></Setter>
+            <Setter Property="materialDesign:TextFieldAssist.HasOutlinedTextField" Value="True"></Setter>
+            <Setter Property="materialDesign:TextFieldAssist.DecorationVisibility" Value="Collapsed"></Setter>
+            
+        </Style>
+        <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"></Style>
         <converter:TabVisibleConverter x:Key="tabVisibleConverter"></converter:TabVisibleConverter>
     </Window.Resources>
-    <Grid>
+    <Grid Background="#F5F5F5">
         <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"></ColumnDefinition>
-            <ColumnDefinition Width="1"></ColumnDefinition>
+            <ColumnDefinition Width="240"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="20"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.RowSpan="2" LastChildFill="False"  Width="220">
-            <TextBox  x:Name="TenantItemsSearchBox"
-                        Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}"
-                        DockPanel.Dock="Top"
-                        Margin="4"
-                        Width="200"
-                        materialDesign:HintAssist.Hint="Search"
-                        materialDesign:HintAssist.IsFloating="True"
-                        materialDesign:TextFieldAssist.HasClearButton="True"
-                        materialDesign:TextFieldAssist.HasOutlinedTextField="True"
-                        materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
-                        materialDesign:TextFieldAssist.TextFieldCornerRadius="4"/>
-            <ListBox 
-                        DockPanel.Dock="Top"
+        <Grid Grid.Row="1" Margin="20 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" 
+                     Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}"
+                     BorderBrush="{x:Null}"
+                     Style="{StaticResource SearchBox}"
+                     />
+            <ListBox  Grid.Row="1"
                         x:Name="TenantItemsListBox" 
-                        Margin="0 10"
+                        Margin="0 20 0 0"
                         ItemsSource="{Binding TenantItems}"
                         Style="{StaticResource MaterialDesignNavigationPrimaryListBox}">
-                <ListBox.Resources>
-                    <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
-                </ListBox.Resources>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}" Width="200">
+                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}" >
                             <TextBlock Text="{Binding Name}" Margin="10 4 0 4"/>
                         </CheckBox>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button  DockPanel.Dock="Bottom" Style="{StaticResource MaterialDesignFlatMidBgButton}" Content="全选/取消" 
+            <Button  Grid.Row="2" Content="全选/取消" 
                      Command="{Binding AllSelectCommand}"></Button>
-
-        </DockPanel>
-        <Border Grid.Column="1" Grid.RowSpan="2"  BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1"></Border>
-        <DockPanel  Grid.Column="2"  Grid.RowSpan="2" LastChildFill="True" >
+        </Grid>
+        <DockPanel Grid.Row="1" Grid.Column="1"  LastChildFill="True" Background="White" >
             <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal" >
                 <Button  Style="{StaticResource MaterialDesignFlatSecondaryLightButton}" ToolTip="运行"
                          IsEnabled="{Binding IsRunning, Converter={StaticResource InvertBooleanConverter}}"
@@ -82,10 +88,10 @@
                     </DockPanel>
                 </Button>
             </WrapPanel>
-            <Border DockPanel.Dock="Top" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="0 0 0 1" />
+            <Border DockPanel.Dock="Top" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="0 0 0 2" />
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="450"></RowDefinition>
+                    <RowDefinition Height="400"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
@@ -110,11 +116,8 @@
                             </avalonEdit:TextEditorOptions.ColumnRulerPosition>
                         </avalonEdit:TextEditorOptions>
                     </avalonEdit:TextEditor.Options>
-                    <avalonEdit:TextEditor.Resources>
-                        <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
-                    </avalonEdit:TextEditor.Resources>
                 </avalonEdit:TextEditor>
-                <GridSplitter Height="2" Grid.Row="1" Grid.Column="0" Background="Gray" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+                <GridSplitter Height="2" Grid.Row="1" Grid.Column="0" Background="{DynamicResource MaterialDesignDivider}" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
                 <ItemsControl Grid.Row="1" ItemsSource="{Binding TabItems}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -149,19 +152,14 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <Grid Grid.Row="2" Visibility="{Binding SelectedTabIndex, Converter={StaticResource tabVisibleConverter}, ConverterParameter='-1'}">
-                    <TextBox 
-                            IsReadOnly="True"
-                            FontSize="16"
-                            Text="{Binding OutputString}"
-                            TextWrapping="Wrap"
-                            VerticalScrollBarVisibility="Auto"
-                            SpellCheck.IsEnabled="True">
-                        <TextBox.Resources>
-                            <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"></Style>
-                        </TextBox.Resources>
-                    </TextBox>
+                    <TextBlock 
+                        Padding="10 0 0 0"
+                        FontSize="16"
+                        Text="{Binding OutputString}"
+                        TextWrapping="Wrap"
+                        >
+                    </TextBlock>
                 </Grid>
-                
                 
             </Grid>
 

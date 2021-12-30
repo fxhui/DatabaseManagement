@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="800">
     <Grid>
-        <DataGrid x:Name="dataGrid" LoadingRow="dataGrid_LoadingRow" ItemsSource="{Binding DataView}" 
+        <DataGrid x:Name="dataGrid"  ItemsSource="{Binding DataView}" 
                   CanUserAddRows="False" AutoGenerateColumns="True" HeadersVisibility="All" GridLinesVisibility="All"
                   RowHeight="35" >
         </DataGrid>
