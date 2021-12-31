@@ -99,7 +99,6 @@
                     xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                     Name="TextEditor"
                     Grid.Row="0"
-                    SyntaxHighlighting="C#"
                     FontFamily="Consolas"
                     FontSize="14"
                     WordWrap ="True"

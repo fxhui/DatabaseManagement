@@ -28,15 +28,18 @@ namespace Database_Management_App
         public MainWindow()
         {
             InitializeComponent();
-            DataContext =new MainWindowViewModel();
+            DataContext = new MainWindowViewModel();
 
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(Assembly.GetExecutingAssembly().GetName().Name + ".sql.xshd"))
             {
                 using (var reader = new System.Xml.XmlTextReader(stream))
                 {
-                    TextEditor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                    var sqlDefinition = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                    HighlightingManager.Instance.RegisterHighlighting("SQL", new string[] { ".sql" }, sqlDefinition);
                 }
             }
+            TextEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("SQL");
+
         }
 
     }

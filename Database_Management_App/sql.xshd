@@ -249,6 +249,11 @@
 			<Word>RECORD</Word>
 			<Word>SUBTYPE</Word>
 			<Word>TRUNCATE</Word>
+			<Word>JOIN</Word>
+			<Word>LEFT JOIN</Word>
+			<Word>INNER JOIN</Word>
+			<Word>RIGHT JOIN</Word>
+			<Word>OUT JOIN</Word>
 		</Keywords>
 
 		<Keywords color="Keyword1">
