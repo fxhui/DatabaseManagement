@@ -1,7 +1,5 @@
-﻿using Dapper;
-using Database_Management_App.Models;
+﻿using Database_Management_App.Models;
 using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -174,7 +172,6 @@ namespace Database_Management_App.ViewModels
                     }
                     _tenantItemsView.Refresh();
 
-
                     void UpdateTenantList(IEnumerable<TenantViewModel> list, bool flag)
                     {
                         if (list == null || list.Count() == 0)
@@ -198,34 +195,32 @@ namespace Database_Management_App.ViewModels
             }
             string sql = !string.IsNullOrWhiteSpace(_selectedString) ? _selectedString : _inputString;
             TabInit();
-            if (sql.Trim().ToLower().StartsWith("select"))
+            int tabIndex = 1;
+            Handle((conn, tenant) =>
             {
-                Handle((conn, item) =>
+                var adapter = new MySqlDataAdapter(sql, conn);
+                var dataSet = new DataSet();
+                adapter.Fill(dataSet);
+                if (dataSet.Tables.Count == 0)
                 {
-                    var dataReader = conn.ExecuteReader(sql);
-                    DataTable dataTable = new DataTable();
-                    dataTable.Load(dataReader);
-
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    return;
+                }
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    for (int i = 0; i < dataSet.Tables.Count; i++)
                     {
                         TabItems.Add(new TabViewModel()
                         {
-                            Id = item.Id,
-                            Content = item.Name
+                            Id = tabIndex,
+                            Content = tenant.Name
                         });
-                        DataGridItems.Add(new DataGridViewModel(dataTable, item.Id));
-                    });
+                        DataGridItems.Add(new DataGridViewModel(dataSet.Tables[i], tabIndex));
+                        tabIndex++;
+                    }
                 });
-            }
-            else
-            {
-                Handle((conn, item) =>
-                {
-                    conn.Execute(sql);
-                });
-            }
+            });
 
-            void Handle(Action<IDbConnection, TenantViewModel> action)
+            void Handle(Action<MySqlConnection, TenantViewModel> action)
             {
                 var list = TenantItems.Where(d => d.IsChecked == true).ToList();
                 foreach (var item in list)
@@ -237,7 +232,7 @@ namespace Database_Management_App.ViewModels
                     Println(item.Name);
                     try
                     {
-                        using (IDbConnection conn = GetSqlConnection(item.ConnectionString))
+                        using (var conn = GetSqlConnection(item.ConnectionString))
                         {
                             action(conn, item);
                         }
