@@ -151,15 +151,16 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <Grid Grid.Row="2" Visibility="{Binding SelectedTabIndex, Converter={StaticResource tabVisibleConverter}, ConverterParameter='-1'}">
-                    <TextBlock 
+                    <TextBox 
+                        IsReadOnly="True"
                         Padding="10 0 0 0"
                         FontSize="16"
                         Text="{Binding OutputString}"
                         TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto"
                         >
-                    </TextBlock>
+                    </TextBox>
                 </Grid>
-                
             </Grid>
 
         </DockPanel>
